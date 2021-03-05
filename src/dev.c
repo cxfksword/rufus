@@ -774,7 +774,7 @@ BOOL GetDevices(DWORD devnum)
 			uprintf("Found non-USB removable device '%s'", buffer);
 		} else {
 			if ((props.vid == 0) && (props.pid == 0)) {
-				if (!props.is_USB) {
+				if (!props.is_USB && !enable_HDDs) {
 					// If we have a non removable SCSI drive and couldn't get a VID:PID,
 					// we are most likely dealing with a system drive => eliminate it!
 					uuprintf("Found non-USB non-removable device '%s' => Eliminated", buffer);
@@ -860,7 +860,7 @@ BOOL GetDevices(DWORD devnum)
 
 			if (GetDriveLabel(drive_index, drive_letters, &label)) {
 				if ((props.is_SCSI) && (!props.is_UASP) && (!props.is_VHD)) {
-					if (!props.is_Removable) {
+					if (!props.is_Removable && !enable_HDDs) {
 						// Non removables should have been eliminated above, but since we
 						// are potentially dealing with system drives, better safe than sorry
 						safe_free(devint_detail_data);
@@ -939,7 +939,7 @@ BOOL GetDevices(DWORD devnum)
 						break;
 					}
 					safe_sprintf(&entry_msg[strlen(entry_msg)], sizeof(entry_msg) - strlen(entry_msg),
-						"%s [%s]", (right_to_left_mode)?RIGHT_TO_LEFT_MARK:"", SizeToHumanReadable(GetDriveSize(drive_index), FALSE, use_fake_units));
+						"%s [%s] - %s", (right_to_left_mode)?RIGHT_TO_LEFT_MARK:"", SizeToHumanReadable(GetDriveSize(drive_index), FALSE, use_fake_units), buffer);
 					entry = entry_msg;
 				}
 

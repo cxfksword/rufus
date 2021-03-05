@@ -3807,12 +3807,13 @@ relaunch:
 			// Ctrl-Alt-F => List non USB removable drives such as eSATA, etc - CAUTION!!!
 			if ((msg.message == WM_KEYDOWN) && (msg.wParam == 'F') &&
 				(GetKeyState(VK_CONTROL) & 0x8000) && (GetKeyState(VK_MENU) & 0x8000)) {
-				list_non_usb_removable_drives = !list_non_usb_removable_drives;
-				if (list_non_usb_removable_drives) {
-					previous_enable_HDDs = enable_HDDs;
-					enable_HDDs = TRUE;
+				previous_enable_HDDs = enable_HDDs;
+				if (previous_enable_HDDs) {
+					list_non_usb_removable_drives = FALSE;
+					enable_HDDs = FALSE;
 				} else {
-					enable_HDDs = previous_enable_HDDs;
+					list_non_usb_removable_drives = TRUE;
+					enable_HDDs = TRUE;
 				}
 				CheckDlgButton(hMainDialog, IDC_LIST_USB_HDD, enable_HDDs ? BST_CHECKED : BST_UNCHECKED);
 				PrintStatusTimeout(lmprintf(MSG_287), list_non_usb_removable_drives);
